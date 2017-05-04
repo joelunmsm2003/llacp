@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app="App" ng-controller="Controller">
+
+{% include "head.html" %}
+
+<script src="/static/js/audio.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">
+
+<body >
+
+
+<div class="container" >
+
+{% include "header.html" %}
+
+<h4> Audios </h4>
+
+
+        <form ng-submit="getaudios(model)">
+
+        <div class='row'>
+
+        <div class="col-md-2" >
+        <div class="form-group">
+        <label>Carteras</label>
+        <select name="cart"  ng-model="model.cartera" ng-change='traecampanias(model)' class="form-control" ng-options="cliente.cartera_id as cliente.cartera__nombre for cliente in carteras"></select>
+        </div>
+        </div>
+
+        <div class="col-md-2" >
+        <div class="form-group">
+        <label>Campaña</label>
+        <select name="camp" ng-change="fecha(model)" ng-model="model.campania" class="form-control" ng-options="cliente.id as cliente.nombre for cliente in campaniasx"></select>
+        </div>
+        </div>
+
+        <div class="col-md-2">
+        <div class="form-group">
+        <label>Fecha Inicio</label>
+        <input name="fecin" type="date" class="form-control"  ng-model="model.fecha" >
+        </div>
+        </div>
+
+        <div class="col-md-2">
+        <div class="form-group">
+        <label>Fecha Fin</label>
+        <input name="fecfin" type="date" class="form-control" ng-model="model.fechafin" >
+        </div>
+        </div>
+
+
+        <div class="col-md-2" >
+        <div class="form-group">
+        <label>Origen</label>
+         <input  name ="origen" type='number' value = "" ng-model="model.origen" class="form-control"></input>
+        </div>
+        </div>
+
+        <div class="col-md-2" >
+        <div class="form-group">
+        <label>Destino</label>
+        <input  type='number'  value = "" ng-model="model.destino" class="form-control"></input>
+        </div>
+        </div>
+
+<p>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+</p>
+      </div>
+
+      </form>
+
+
+    <table class="table table-hover ">
+
+        <tbody>
+
+            <thead>
+
+            <tr>
+                  <th class="id" >Id <a ng-click="sort_by('id',currentPage)"><i class="icon-sort"></i></a></th>
+                  <th class="fecha">Fecha <a ng-click="sort_by('fecha',currentPage)"><i class="icon-sort"></i></a></th>
+                   <th class="duration">Duracion (seg) <a ng-click="sort_by('duration',currentPage)"><i class="icon-sort"></i></a></th>
+                  <th class="v_tring" >Origen <a ng-click="sort_by('v_tring',currentPage)"><i class="icon-sort"></i></a></th>
+                  <th class="telefono">Destino <a ng-click="sort_by('telefono',currentPage)"><i class="icon-sort"></i></a></th>
+                  <th class="audio">Audio <a ng-click="sort_by('audio',currentPage)"><i class="icon-sort"></i></a></th>
+                  <th>Evaluacion</th>
+
+            </tr>
+
+            </thead>
+
+
+              <tfoot>
+                    <td colspan="12">
+                      <ul class="pagination" ng-repeat="n in toto">
+                      <li ng-class="{active: n-1 == currentPage}"><a href="#" ng-click="setPage()">{[{n}]}</a></li>
+                      </ul>
+                    </td>
+              </tfoot>
+
+
+
+              <tr   ng-repeat="contact in audiospe  " ts-repeat>
+
+                <td >{[{contact.id_ori_llamadas}]} </td>
+                <td >{[{contact.fecha}]} </td>
+                <td >{[{contact.duration}]} </td>
+                <td >{[{contact.v_tring}]} </td>
+                <td >{[{contact.llam_numero}]}</td>
+
+                <td style="float:left;"><center>
+
+
+                        <button type="button" class="btn btn-primary btn-sm" ng-click="descargaudio(contact)"  data-toggle="modal" ><i class="fa fa-download"></i></button>
+
+                        </center>
+
+              </td>
+
+              <td><a  ng-click="evaluar(contact,$index)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#eval"><i class="fa fa-check"></i></a></td>
+
+              </tr>
+
+        </tbody>
+
+        </table>
+
+        <button type="submit" class="btn btn-primary" ><i class="fa fa-download"></i> Descargar</button>
+
+
+<!--inicio modales-->
+
+<div id="eval" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h5 class="modal-title">Calificacion del agente  {[{user.agente__user__first_name}]} </h5>
+
+        <h5>{[{primer.nombre}]}</h5>
+
+      </div>
+        <div class="modal-body">
+
+                  <div class='row'>
+
+                     <div class="col-sm-6"><center><h5>Preguntas</h5></center>
+                     </div>
+
+                     <div class="col-sm-6"><center><h5>Calificación</h5></center>
+                     </div>
+
+                  
+
+                  </div><br>
+
+
+
+
+                  <div class='row'>
+                    <ul ng-repeat=" pregunta in preguntas">
+                    <div class="col-sm-12">
+                        <div class='row'>
+                            <div class="col-sm-6">  
+
+
+                            
+                             <p> {[{pregunta.pregunta}]}</p>
+
+
+                            
+                            </div>
+
+
+                            
+
+                            <div class="col-sm-6">
+                            <center>
+
+                            <button type="submit" ng-click="calificarsi(pregunta)"  ng-if="pregunta.estadosi==true" class="btn btn-primary ">Si <i class="fa fa-check"></i></button>
+
+
+                            <button type="submit" ng-click="calificarno(pregunta)"  ng-if="pregunta.estadono==true" class="btn btn-primary ">No <i class="fa fa-close"></i></button>
+                            </center>
+
+                            </div>
+
+
+
+
+                               
+
+
+                    </div>
+                    <br>
+
+
+
+                    </ul>
+
+                  </div>  
+                 
+        </div>
+
+         <div class="modal-footer">
+
+             <button class="btn" data-dismiss="modal">Cerrar</button>
+             <button class="btn btn-primary"  ng-click='criterio(primer)' ng-show='btnpregunta'>Siguiente Criterio</button>
+             <button class="btn btn-primary"  ng-click='calificacion()' ng-show='btncalifica'>Finalizar</button>
+           
+      </div>
+    
+   
+
+
+
+    </div>
+
+  </div>
+</div>
+
+
+</body>

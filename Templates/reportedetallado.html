@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app="App" ng-controller="Controller">
+
+{% include "head.html" %}
+
+<script src="/static/js/reportedetallado.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">
+
+<body >
+
+
+
+<div class="container" >
+
+{% include "header.html" %}
+
+<h4>Reporte Detallado</h4>
+
+<!---Modal-->
+
+
+
+  
+        <form ng-submit="busqueda(model)">
+
+        <div class='row'>
+
+
+        <div class="col-md-2">
+        <div class="form-group">
+        <label>Cartera</label>
+        <select ng-model="model.cartera" class="form-control" ng-change="campanias(model)" ng-options="cliente.cartera_id as cliente.cartera__nombre for cliente in carteras"></select>
+        </div>
+        </div>
+
+
+        <div class="col-md-2" >
+        <div class="form-group">
+        <label>Campaña</label>
+        <select  ng-model="model.campania" class="form-control" ng-change="fecha(model)" ng-options="cliente.id as cliente.nombre for cliente in campaniasx"></select>
+        </div>
+        </div>
+
+        
+      
+        <div class="col-md-2">
+        <div class="form-group">
+        <label>Fecha Inicio</label>
+        <input type="date" class="form-control" ng-model="model.inicio" >
+        </div>
+        </div>
+
+        <div class="col-md-2">
+        <div class="form-group">
+        <label>Fecha Fin</label>
+        <input type="date" class="form-control" ng-model="model.fin" >
+        </div>
+        </div>
+
+       
+        <div class="col-md-2" >
+        <div class="form-group">
+        <label>Telefono</label>
+         <input  value = "" ng-model="model.telefono" class="form-control" ></input>
+      
+        </div>
+        </div>
+
+        <div class="col-md-2" >
+        <div class="form-group">
+        <label>DNI Cliente</label>
+         <input  value = "" ng-model="model.cliente" class="form-control"></input>
+        </div>
+        </div>
+
+
+
+
+
+          <button type="submit" class="btn btn-primary">Filtrar</button>
+
+          </div>
+     
+
+      </form>
+
+
+
+           
+
+
+
+</body>
+
+</html>
